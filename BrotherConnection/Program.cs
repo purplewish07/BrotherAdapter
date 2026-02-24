@@ -20,7 +20,7 @@ namespace BrotherConnection
                 var DecodedResults = new Dictionary<String, String>();
 
                 Console.Clear();
-                var req = new Request();
+                var req = new BrotherClient("10.0.0.25");
                 req.Command = "LOD";
                 req.Arguments = prodData3Map.FileName;
 

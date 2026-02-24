@@ -1,20 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace BrotherConnection
 {
-    class Request
+    public class BrotherClient
     {
-        public String Command { get; set; }
-        public String Arguments { get; set; }
+        protected string ip;
+        protected int port;
 
-        public String Send()
+        public string Command { get; set; }
+        public string Arguments { get; set; }
+
+        public BrotherClient(string ip, int port = 10000)
+        {
+            this.ip = ip;
+            this.port = port;
+        }
+
+        public string Send()
         {
             using (var client = new TcpClient())
             {
@@ -24,7 +29,7 @@ namespace BrotherConnection
                 {
                     try
                     {
-                        client.Connect("10.0.0.25", 10000);
+                        client.Connect(ip, port);
                         client.NoDelay = true;
                         connected = true;
                     }
@@ -40,7 +45,6 @@ namespace BrotherConnection
                 }
 
                 client.SendTimeout = 2000;
-
 
                 var command = "C" + Command.PadRight(7) + Arguments.PadRight(8) + "  \r\n";
                 Int32 checksum = 0;
